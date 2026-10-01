@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Trading OS</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_trades">Trades</string>
+    <string name="nav_analytics">Analytics</string>
+    <string name="nav_prop_firms">Prop Firms</string>
+    <string name="nav_risk">Risk</string>
+    <string name="nav_calculators">Calculator</string>
+    <string name="nav_psychology">Psychology</string>
+    <string name="nav_calendar">Calendar</string>
+    <string name="nav_notes">Notes</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="btn_add_trade">New Trade</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_filter">Filter</string>
+</resources>

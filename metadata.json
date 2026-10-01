@@ -1,0 +1,6 @@
+{
+  "name": "Trading OS",
+  "description": "Professional trading journal, analytics, risk management, and prop firm tracker for serious traders.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

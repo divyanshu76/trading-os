@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trading OS — Professional Trading Journal & Analytics for Android
 
-## Getting Started
+A native Android application built with **Kotlin**, **Jetpack Compose (Material 3)**, and **Room Database**, providing serious retail traders with institutional-grade journal tracking, live position size calculations, risk management rules, and prop firm evaluation monitoring.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Authoritative Balance & Trade Journal**: Track trades across multiple accounts (Personal, Prop Firm, Demo) with authoritative realized P&L calculations.
+- **Financial Analytics Engine**:
+  - Live Win Rate, Profit Factor, Expectancy, and Average Win/Loss.
+  - Drawdown monitoring with peak equity tracking.
+  - Win/Loss streak counter and current streak status.
+  - Directional performance (Long vs Short) and session breakdown (London, New York, Asia).
+- **Interactive Equity Curve**: Native Canvas-rendered equity curve visualizer with gradient fills.
+- **Position Size Calculator**: Normalized position sizing based on tick size, tick value, and contract specs for Forex, Metals (Gold), Indices (NAS100, US30, SP500), and Crypto (BTC, ETH).
+- **Prop Firm Tracker**: Monitor challenge phases (Phase 1, Phase 2, Funded) with real-time target progress, daily loss buffers, and overall drawdown limits.
+- **Risk Manager**: Capital preservation rules with automated warnings (Safe, Caution, Breached) comparing daily closed trade losses against account parameters.
+- **Trade Calendar**: Day-by-day P&L breakdown highlighting winning vs losing days.
+- **Psychology & Strategy Playbook**: Daily discipline scoring, emotional reflections, and strategy playbook notes.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack & Architecture
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **UI**: 100% Jetpack Compose with Material Design 3.
+- **Architecture**: MVVM with Repository Pattern and Kotlin Coroutines / StateFlow.
+- **Local Persistence**: Android Room Database with reactive Flow queries and schema versioning.
+- **Build System**: Gradle Kotlin DSL (`build.gradle.kts`) with Version Catalog (`libs.versions.toml`).

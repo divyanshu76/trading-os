@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_ocean">#386382</color>
+    <color name="primary_dark">#182A3A</color>
+    <color name="accent_blue">#9ABFCF</color>
+    <color name="bg_mist">#F0F3FA</color>
+    <color name="profit_teal">#357D71</color>
+    <color name="loss_slate_red">#A55363</color>
+    <color name="warning_amber">#B87333</color>
+</resources>
