@@ -64,7 +64,7 @@ export function SearchableSelect({
           sideOffset={6}
           avoidCollisions={true}
           collisionPadding={12}
-          className="z-50 w-[var(--radix-popover-trigger-width)] min-w-[200px] max-h-[min(320px,calc(100vh-24px))] overflow-hidden rounded-[14px] border border-[hsl(var(--border)/0.15)] bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] shadow-[0_12px_48px_rgba(20,24,28,0.12)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 p-1.5"
+          className="z-50 w-[var(--radix-popover-trigger-width)] min-w-[200px] max-h-[min(320px,calc(100vh-24px))] overflow-hidden rounded-[14px] glass-dropdown data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 p-1.5"
         >
           <Command className="flex h-full w-full flex-col overflow-hidden bg-transparent" shouldFilter={false}>
             <div className="flex items-center border-b border-[hsl(var(--border)/0.1)] px-3">

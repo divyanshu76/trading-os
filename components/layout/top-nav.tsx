@@ -4,21 +4,23 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
-  Bell, Search, Plus, ChevronDown, LogOut, User, Settings,
-  Sun, Moon, Monitor, Zap
+  Bell, Search, Plus, ChevronDown, LogOut, User, Settings, Zap
 } from 'lucide-react'
-import { useTheme } from '@teispace/next-themes'
 import { createClient } from '@/lib/supabase/client'
 import { useAppStore } from '@/stores/app-store'
 import { cn, formatCurrency } from '@/lib/utils'
 import type { Account } from '@/types/database'
+import { MobileNav } from './mobile-nav'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
 export function TopNav() {
   const router = useRouter()
-  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
   const { selectedAccountId, setSelectedAccountId, accounts, profile, unreadNotifications } = useAppStore()
-  const [accountMenuOpen, setAccountMenuOpen] = useState(false)
-  const [userMenuOpen, setUserMenuOpen] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const selectedAccount = accounts.find(a => a.id === selectedAccountId)
 
@@ -28,170 +30,175 @@ export function TopNav() {
     router.push('/login')
   }
 
-  const themeIcons = {
-    dark: Moon,
-    light: Sun,
-    system: Monitor,
-  }
-  const ThemeIcon = themeIcons[(theme ?? 'dark') as keyof typeof themeIcons] ?? Moon
+
 
   return (
-    <header className="h-16 flex items-center justify-between px-6 border-b border-border/10 bg-card flex-shrink-0">
-      {/* Left: Account Switcher */}
-      <div className="relative">
-        <button
-          onClick={() => setAccountMenuOpen(!accountMenuOpen)}
-          className="flex items-center gap-2 px-3 py-2 rounded-lg text-[13px] font-semibold bg-charcoal/5 hover:bg-charcoal/10 transition-colors border border-border/5"
-          aria-label="Select account"
-          aria-haspopup="true"
-          aria-expanded={accountMenuOpen}
-        >
-          <span className="text-foreground">
-            {selectedAccountId ? (selectedAccount?.name ?? 'Account') : 'All Accounts'}
-          </span>
-          {selectedAccount && (
-            <span className="text-grey tabular-nums">
-              {formatCurrency(selectedAccount.current_balance, selectedAccount.currency)}
-            </span>
-          )}
-          <ChevronDown className="w-3.5 h-3.5 text-grey" />
-        </button>
-
-        {accountMenuOpen && (
-          <div className="absolute top-full left-0 mt-2 w-64 rounded-xl border border-border/10 bg-offwhite shadow-[0_8px_30px_rgb(0,0,0,0.08)] z-50 py-1.5 animate-fade-in">
+    <header className="h-16 flex items-center justify-between px-4 md:px-6 border-b border-[rgba(56,99,130,0.12)] bg-white/45 backdrop-blur-2xl flex-shrink-0 relative z-40">
+      {/* Left: Account Switcher & Mobile Nav */}
+      <div className="flex items-center gap-2 flex-shrink-0 min-w-0">
+        <MobileNav />
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger asChild>
             <button
-              onClick={() => { setSelectedAccountId(null); setAccountMenuOpen(false) }}
-              className={cn(
-                'w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-charcoal/5 transition-colors',
-                !selectedAccountId ? 'text-charcoal font-bold' : 'text-slate font-medium'
-              )}
+              className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-[13px] font-semibold glass hover:bg-white/80 transition-all border border-[rgba(56,99,130,0.14)] shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-[#386382] min-w-0"
             >
-              <Zap className={cn("w-4 h-4", !selectedAccountId ? "text-charcoal" : "text-grey")} />
-              All Accounts
+              <span className="text-[#182A3A] truncate max-w-[100px] sm:max-w-none">
+                {selectedAccountId ? (selectedAccount?.name ?? 'Account') : 'All Accounts'}
+              </span>
+              {selectedAccount && (
+                <span className="text-[#4D5B70] tabular-nums">
+                  {formatCurrency(selectedAccount.current_balance, selectedAccount.currency)}
+                </span>
+              )}
+              <ChevronDown className="w-3.5 h-3.5 text-[#4D5B70]" />
             </button>
-            {accounts.length > 0 && (
-              <div className="my-1 border-t border-[hsl(var(--border))]" />
-            )}
-            {accounts.map(acc => (
-              <button
-                key={acc.id}
-                onClick={() => { setSelectedAccountId(acc.id); setAccountMenuOpen(false) }}
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              align="start"
+              sideOffset={8}
+              collisionPadding={16}
+              className="z-50 w-64 rounded-xl glass-dropdown py-1.5 animate-in fade-in-0 zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2"
+            >
+              <DropdownMenu.Item
+                onSelect={() => setSelectedAccountId(null)}
                 className={cn(
-                  'w-full flex items-center justify-between gap-3 px-4 py-2 text-sm hover:bg-charcoal/5 transition-colors',
-                  selectedAccountId === acc.id ? 'text-charcoal font-bold' : 'text-slate font-medium'
+                  'w-full flex items-center gap-3 px-4 py-2 text-sm outline-none cursor-default transition-colors focus:bg-[hsl(var(--muted))] focus:text-[hsl(var(--foreground))]',
+                  !selectedAccountId ? 'text-[hsl(var(--foreground))] font-bold' : 'text-[hsl(var(--muted-foreground))] font-medium'
                 )}
               >
-                <div className="flex items-center gap-2">
-                  <div
-                    className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: acc.color ?? '#6366f1' }}
-                  />
-                  <span>{acc.name}</span>
-                  <span className="text-xs text-[hsl(var(--muted-foreground))] capitalize">
-                    {acc.type}
+                <Zap className={cn("w-4 h-4", !selectedAccountId ? "text-[hsl(var(--foreground))]" : "text-[hsl(var(--muted-foreground))]/70")} />
+                All Accounts
+              </DropdownMenu.Item>
+              
+              {accounts.length > 0 && (
+                <DropdownMenu.Separator className="my-1 h-px bg-[hsl(var(--border))/0.3]" />
+              )}
+              
+              {accounts.map(acc => (
+                <DropdownMenu.Item
+                  key={acc.id}
+                  onSelect={() => setSelectedAccountId(acc.id)}
+                  className={cn(
+                    'w-full flex items-center justify-between gap-3 px-4 py-2 text-sm outline-none cursor-default transition-colors focus:bg-[hsl(var(--muted))] focus:text-[hsl(var(--foreground))]',
+                    selectedAccountId === acc.id ? 'text-[hsl(var(--foreground))] font-bold' : 'text-[hsl(var(--muted-foreground))] font-medium'
+                  )}
+                >
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-2 h-2 rounded-full shadow-sm"
+                      style={{ backgroundColor: acc.color ?? '#6366f1' }}
+                    />
+                    <span>{acc.name}</span>
+                    <span className="text-xs opacity-70 capitalize hidden sm:inline-block">
+                      {acc.type}
+                    </span>
+                  </div>
+                  <span className="tabular-nums text-xs opacity-80">
+                    {formatCurrency(acc.current_balance, acc.currency)}
                   </span>
-                </div>
-                <span className="tabular-nums text-xs text-[hsl(var(--muted-foreground))]">
-                  {formatCurrency(acc.current_balance, acc.currency)}
-                </span>
-              </button>
-            ))}
-            <div className="my-1 border-t border-[hsl(var(--border))]" />
-            <Link
-              href="/accounts"
-              onClick={() => setAccountMenuOpen(false)}
-              className="flex items-center gap-2 px-4 py-2 text-sm text-grey hover:text-charcoal hover:bg-charcoal/5 transition-colors font-medium"
-            >
-              <Settings className="w-3.5 h-3.5" />
-              Manage Accounts
-            </Link>
-          </div>
-        )}
+                </DropdownMenu.Item>
+              ))}
+              
+              <DropdownMenu.Separator className="my-1 h-px bg-[hsl(var(--border))/0.3]" />
+              
+              <DropdownMenu.Item asChild>
+                <Link
+                  href="/accounts"
+                  className="flex items-center gap-2 px-4 py-2 text-sm text-[hsl(var(--muted-foreground))] focus:text-[hsl(var(--foreground))] focus:bg-[hsl(var(--muted))] outline-none cursor-default transition-colors font-medium"
+                >
+                  <Settings className="w-3.5 h-3.5" />
+                  Manage Accounts
+                </Link>
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
       </div>
 
       {/* Right: Actions */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
         {/* Quick Add Trade */}
         <Link
           href="/trades/new"
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-bold bg-charcoal text-offwhite hover:bg-slate transition-colors shadow-sm"
+          className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-[13px] font-bold bg-[#386382] text-white hover:bg-[#2B4E68] transition-all shadow-sm hover:shadow-md hover:-translate-y-[1px] flex-shrink-0"
           id="quick-add-trade-btn"
         >
           <Plus className="w-4 h-4" />
           <span className="hidden sm:inline">Add Trade</span>
         </Link>
 
-        {/* Theme toggle */}
-        <button
-          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className="p-2.5 rounded-lg text-grey hover:text-charcoal hover:bg-charcoal/5 transition-colors border border-transparent hover:border-border/5"
-          aria-label="Toggle theme"
-        >
-          <ThemeIcon className="w-4 h-4" />
-        </button>
 
         {/* Notifications */}
         <Link
           href="/settings"
-          className="relative p-2.5 rounded-lg text-grey hover:text-charcoal hover:bg-charcoal/5 transition-colors border border-transparent hover:border-border/5"
+          className="relative p-2.5 rounded-xl glass text-[#4D5B70] hover:text-[#182A3A] hover:bg-white/80 transition-all border border-[rgba(56,99,130,0.14)] shadow-sm"
           aria-label="Notifications"
         >
           <Bell className="w-4 h-4" />
           {unreadNotifications > 0 && (
-            <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-slate shadow-[0_0_8px_rgba(87,112,122,0.5)]" />
+            <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#386382]" />
           )}
         </Link>
 
         {/* User menu */}
-        <div className="relative">
-          <button
-            onClick={() => setUserMenuOpen(!userMenuOpen)}
-            className="flex items-center gap-2 px-2 py-1.5 rounded-md text-sm hover:bg-[hsl(var(--muted))] transition-colors"
-            aria-label="User menu"
-            aria-haspopup="true"
-            aria-expanded={userMenuOpen}
-          >
-            <div className="w-8 h-8 rounded-lg bg-charcoal/5 border border-border/5 flex items-center justify-center">
-              <User className="w-4 h-4 text-charcoal" />
-            </div>
-            <span className="hidden md:block text-sm font-medium max-w-[120px] truncate">
-              {profile?.full_name ?? profile?.username ?? 'Trader'}
-            </span>
-          </button>
-
-          {userMenuOpen && (
-            <div className="absolute top-full right-0 mt-2 w-56 rounded-xl border border-border/10 bg-offwhite shadow-[0_8px_30px_rgb(0,0,0,0.08)] z-50 py-1.5 animate-fade-in">
-              <div className="px-3 py-2 border-b border-[hsl(var(--border))]">
-                <p className="text-sm font-medium">{profile?.full_name ?? 'Trader'}</p>
-                <p className="text-xs text-[hsl(var(--muted-foreground))]">{profile?.base_currency} · {profile?.timezone?.split('/')[1]}</p>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger asChild>
+            <button
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl glass-elevated hover:bg-white/90 transition-all outline-none border border-[rgba(56,99,130,0.16)] shadow-sm"
+            >
+              <div className="w-8 h-8 rounded-lg bg-[rgba(56,99,130,0.08)] border border-[rgba(56,99,130,0.12)] flex items-center justify-center">
+                <User className="w-4 h-4 text-[#386382]" />
               </div>
-              <Link
-                href="/settings/profile"
-                onClick={() => setUserMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate hover:text-charcoal hover:bg-charcoal/5 transition-colors font-medium"
-              >
-                <User className="w-4 h-4 text-grey" />
-                Profile
-              </Link>
-              <Link
-                href="/settings"
-                onClick={() => setUserMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate hover:text-charcoal hover:bg-charcoal/5 transition-colors font-medium"
-              >
-                <Settings className="w-4 h-4 text-grey" />
-                Settings
-              </Link>
-              <div className="my-1 border-t border-[hsl(var(--border))]" />
-              <button
-                onClick={handleSignOut}
-                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-loss hover:bg-loss/10 transition-colors"
+              <span className="hidden md:block text-sm font-semibold max-w-[120px] truncate text-[#182A3A]">
+                {profile?.full_name ?? profile?.username ?? 'Trader'}
+              </span>
+            </button>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Portal>
+            <DropdownMenu.Content
+              align="end"
+              sideOffset={8}
+              collisionPadding={16}
+              className="z-50 w-56 rounded-xl glass-dropdown py-1.5 animate-in fade-in-0 zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2"
+            >
+              <div className="px-3 py-2 border-b border-[hsl(var(--border))/0.3]">
+                <p className="text-sm font-medium text-[hsl(var(--foreground))]">{profile?.full_name ?? 'Trader'}</p>
+                <p className="text-xs text-[hsl(var(--muted-foreground))] mt-0.5">{profile?.base_currency} · {profile?.timezone?.split('/')[1]}</p>
+              </div>
+              
+              <DropdownMenu.Item asChild>
+                <Link
+                  href="/settings/profile"
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-[hsl(var(--muted-foreground))] focus:text-[hsl(var(--foreground))] focus:bg-[hsl(var(--muted))] outline-none cursor-default transition-colors font-medium mt-1"
+                >
+                  <User className="w-4 h-4" />
+                  Profile
+                </Link>
+              </DropdownMenu.Item>
+              
+              <DropdownMenu.Item asChild>
+                <Link
+                  href="/settings"
+                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-[hsl(var(--muted-foreground))] focus:text-[hsl(var(--foreground))] focus:bg-[hsl(var(--muted))] outline-none cursor-default transition-colors font-medium"
+                >
+                  <Settings className="w-4 h-4" />
+                  Settings
+                </Link>
+              </DropdownMenu.Item>
+              
+              <DropdownMenu.Separator className="my-1 h-px bg-[hsl(var(--border))/0.3]" />
+              
+              <DropdownMenu.Item
+                onSelect={handleSignOut}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-[hsl(var(--danger))] focus:bg-[hsl(var(--danger))/0.1] outline-none cursor-default transition-colors"
               >
                 <LogOut className="w-4 h-4" />
                 Sign Out
-              </button>
-            </div>
-          )}
-        </div>
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Portal>
+        </DropdownMenu.Root>
       </div>
     </header>
   )

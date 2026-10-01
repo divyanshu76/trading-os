@@ -6,10 +6,10 @@ import { AuthFormPanel } from '@/components/auth/auth-form-panel'
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative h-[100dvh] w-full bg-[hsl(var(--background))] overflow-hidden flex flex-col items-center p-[8px_8px_12px] md:p-[16px_24px_20px] lg:p-[20px_24px_16px]">
+    <div className="relative min-h-[100dvh] md:h-[100dvh] w-full bg-[hsl(var(--background))] overflow-x-hidden md:overflow-hidden flex flex-col items-center p-[16px_16px_24px] md:p-[16px_24px_20px] lg:p-[20px_24px_16px]">
       <AuthPageBackground />
       
-      <div className="w-full flex-1 flex flex-col items-center justify-center min-h-0">
+      <div className="w-full flex-1 flex flex-col items-center justify-center min-h-0 py-8 md:py-0">
       <AuthShell>
         {/* Left Side Visual Panel */}
         <AuthVisualPanel />

@@ -62,7 +62,7 @@ export function AuthVisualPanel() {
   const isLogin = pathname.includes('/login')
 
   return (
-    <div className="relative w-full h-[clamp(80px,12dvh,120px)] min-h-[80px] lg:h-full lg:min-h-0 bg-[#ECE9E4] flex flex-col justify-between shrink-0 overflow-hidden lg:overflow-visible">
+    <div className="relative w-full h-auto py-8 lg:h-full lg:py-0 lg:min-h-0 bg-[hsl(var(--card))/0.2] flex flex-col justify-between shrink-0 overflow-hidden lg:overflow-visible">
       <CurvedDivider />
 
       <div className="relative z-10 p-3 sm:p-5 lg:p-10 xl:p-14 flex flex-col h-full justify-center lg:justify-between">
@@ -86,7 +86,7 @@ export function AuthVisualPanel() {
                 transition={{ duration: 0.4 }}
                 className="max-w-[420px]"
               >
-                <h1 className="text-[18px] sm:text-[22px] lg:text-[38px] xl:text-[42px] font-extrabold tracking-tight text-[hsl(var(--foreground))] leading-[1.1] [@media(max-height:740px)]:hidden lg:[@media(max-height:740px)]:block">
+                <h1 className="text-[18px] sm:text-[22px] lg:text-[38px] xl:text-[42px] font-extrabold tracking-tight text-[hsl(var(--foreground))] leading-[1.1]">
                   Your trading data.<br />One Trading OS.
                 </h1>
                 <p className="hidden lg:block mt-5 text-[15px] font-medium text-[hsl(var(--muted-foreground))] leading-relaxed">
@@ -102,7 +102,7 @@ export function AuthVisualPanel() {
                 transition={{ duration: 0.4 }}
                 className="max-w-[420px]"
               >
-                <h1 className="text-[18px] sm:text-[22px] lg:text-[38px] xl:text-[42px] font-extrabold tracking-tight text-[hsl(var(--foreground))] leading-[1.1] [@media(max-height:740px)]:hidden lg:[@media(max-height:740px)]:block">
+                <h1 className="text-[18px] sm:text-[22px] lg:text-[38px] xl:text-[42px] font-extrabold tracking-tight text-[hsl(var(--foreground))] leading-[1.1]">
                   Build your trading record.
                 </h1>
                 <p className="hidden lg:block mt-5 text-[15px] font-medium text-[hsl(var(--muted-foreground))] leading-relaxed">

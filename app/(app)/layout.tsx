@@ -35,7 +35,7 @@ export default async function AppLayout({
 
   return (
     <AppInitializer profile={profile} accounts={accountsWithAuthBalance}>
-      <div className="flex h-screen bg-[hsl(var(--background))] overflow-hidden">
+      <div className="flex h-screen bg-transparent overflow-hidden relative z-10">
         {/* Sidebar */}
         <Sidebar />
 
@@ -43,7 +43,7 @@ export default async function AppLayout({
         <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
           <TopNav />
           <main
-            className="flex-1 overflow-y-auto scrollbar-thin"
+            className="flex-1 overflow-y-auto scrollbar-none"
             id="main-content"
             role="main"
           >

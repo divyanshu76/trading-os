@@ -16,7 +16,7 @@ import {
   calculateRR, calculateRMultiple, calculateHoldingTime, DEFAULT_INSTRUMENTS, formatCurrency
 } from '@/lib/calculations'
 import { cn, SESSIONS, EMOTIONS, TIMEFRAMES } from '@/lib/utils'
-import type { Instrument, TradeChecklistItem } from '@/types/database'
+import type { Instrument, TradeChecklistItem, Trade } from '@/types/database'
 
 const tradeSchema = z.object({
   // Basic
@@ -64,6 +64,7 @@ interface AddTradeFormProps {
   instruments: Instrument[]
   checklistItems: TradeChecklistItem[]
   currency: string
+  initialTrade?: Trade
 }
 
 type Section = 'basic' | 'prices' | 'strategy' | 'psychology' | 'journal' | 'screenshots' | 'checklist'
@@ -78,7 +79,7 @@ const SECTIONS: Array<{ id: Section; label: string; description: string }> = [
   { id: 'checklist', label: '7 · Checklist',  description: 'Pre-trade rules' },
 ]
 
-export function AddTradeForm({ accounts, strategies, instruments, checklistItems, currency }: AddTradeFormProps) {
+export function AddTradeForm({ accounts, strategies, instruments, checklistItems, currency, initialTrade }: AddTradeFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [openSection, setOpenSection] = useState<Section>('basic')
@@ -138,7 +139,34 @@ export function AddTradeForm({ accounts, strategies, instruments, checklistItems
 
   const { register, handleSubmit, watch, control, setValue, formState: { errors } } = useForm<TradeFormValues>({
     resolver: zodResolver(dynamicTradeSchema) as any,
-    defaultValues: {
+    defaultValues: initialTrade ? {
+      account_id: initialTrade.account_id,
+      date: initialTrade.date.split('T')[0],
+      entry_time: initialTrade.entry_time ? (initialTrade.entry_time.includes('T') ? initialTrade.entry_time.split('T')[1].substring(0, 5) : '') : '',
+      exit_time: initialTrade.exit_time ? (initialTrade.exit_time.includes('T') ? initialTrade.exit_time.split('T')[1].substring(0, 5) : '') : '',
+      symbol: initialTrade.symbol,
+      direction: initialTrade.direction as 'long' | 'short',
+      lot_size: initialTrade.lot_size,
+      entry_price: initialTrade.entry_price ?? undefined,
+      stop_loss: initialTrade.stop_loss,
+      take_profit: initialTrade.take_profit,
+      exit_price: initialTrade.exit_price,
+      strategy_id: initialTrade.strategy_id,
+      setup: initialTrade.setup ?? undefined,
+      timeframe: initialTrade.timeframe ?? undefined,
+      session: initialTrade.session,
+      market_condition: initialTrade.market_condition,
+      emotion_before: initialTrade.emotion_before,
+      emotion_during: initialTrade.emotion_during,
+      emotion_after: initialTrade.emotion_after,
+      confidence_score: initialTrade.confidence_score,
+      discipline_score: initialTrade.discipline_score,
+      stress_level: initialTrade.stress_level,
+      trade_reason: initialTrade.trade_reason ?? undefined,
+      what_went_right: initialTrade.what_went_right ?? undefined,
+      what_went_wrong: initialTrade.what_went_wrong ?? undefined,
+      lesson: initialTrade.lesson ?? undefined,
+    } : {
       date: new Date().toISOString().split('T')[0],
       direction: 'long',
     },
@@ -269,7 +297,16 @@ export function AddTradeForm({ accounts, strategies, instruments, checklistItems
       checklist_completed: checklistItems.length > 0 && Object.values(checklist).filter(Boolean).length === checklistItems.length,
     }
 
-    const { data: trade, error } = await (supabase.from('trades').insert(tradePayload as any).select().single() as any)
+    let trade: any, error: any
+    if (initialTrade) {
+      const { data: updatedTrade, error: updateError } = await (supabase.from('trades') as any).update(tradePayload).eq('id', initialTrade.id).select().single()
+      trade = updatedTrade
+      error = updateError
+    } else {
+      const { data: newTrade, error: insertError } = await (supabase.from('trades') as any).insert(tradePayload).select().single()
+      trade = newTrade
+      error = insertError
+    }
 
     if (error) {
       console.error('Supabase Insert Error:', error)
@@ -360,8 +397,8 @@ export function AddTradeForm({ accounts, strategies, instruments, checklistItems
           <ArrowLeft className="w-4 h-4" />
         </Link>
         <div>
-          <h1 className="text-xl font-bold">Add Trade</h1>
-          <p className="text-sm text-[hsl(var(--muted-foreground))]">Record a new trade entry</p>
+          <h1 className="text-xl font-bold">{initialTrade ? 'Edit Trade' : 'Add Trade'}</h1>
+          <p className="text-sm text-[hsl(var(--muted-foreground))]">{initialTrade ? 'Update your trade details' : 'Record a new trade entry'}</p>
         </div>
       </div>
 
@@ -785,7 +822,7 @@ export function AddTradeForm({ accounts, strategies, instruments, checklistItems
             id="add-trade-submit"
             className="flex-1 sm:flex-none px-8 py-2.5 rounded-lg bg-[hsl(var(--primary))] text-white text-sm font-medium hover:bg-[hsl(var(--primary)/0.9)] disabled:opacity-50 transition-all"
           >
-            {loading ? 'Saving…' : 'Save Trade'}
+            {loading ? 'Saving…' : (initialTrade ? 'Update Trade' : 'Save Trade')}
           </button>
           <Link
             href="/trades"

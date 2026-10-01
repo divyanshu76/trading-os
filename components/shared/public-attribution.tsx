@@ -17,18 +17,18 @@ export function PublicAttribution({ animate = true, className = '' }: PublicAttr
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Visit DEADCODE LABS website"
-        className="text-[11px] font-bold tracking-widest text-slate/50 hover:text-slate/80 transition-colors uppercase"
+        className="text-[11px] font-bold tracking-widest text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] transition-colors uppercase"
       >
         DEADCODE LABS
       </a>
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap justify-center items-center gap-3">
         <a
           href="https://www.instagram.com/truly_divyanshu/"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Instagram – @truly_divyanshu"
           title="@truly_divyanshu on Instagram"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[hsl(var(--border)/0.15)] text-slate/40 hover:text-slate/70 hover:border-[hsl(var(--border)/0.3)] transition-all text-[12px] font-semibold"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[hsl(var(--border))] text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:border-[hsl(var(--foreground))/0.3] transition-all text-[12px] font-semibold"
         >
           <Instagram className="w-3.5 h-3.5" />
           Instagram
@@ -39,7 +39,7 @@ export function PublicAttribution({ animate = true, className = '' }: PublicAttr
           rel="noopener noreferrer"
           aria-label="GitHub – divyanshu76"
           title="divyanshu76 on GitHub"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[hsl(var(--border)/0.15)] text-slate/40 hover:text-slate/70 hover:border-[hsl(var(--border)/0.3)] transition-all text-[12px] font-semibold"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[hsl(var(--border))] text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:border-[hsl(var(--foreground))/0.3] transition-all text-[12px] font-semibold"
         >
           <Github className="w-3.5 h-3.5" />
           GitHub

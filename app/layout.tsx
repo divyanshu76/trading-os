@@ -32,7 +32,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${manrope.variable} font-sans antialiased`} suppressHydrationWarning>
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className="ocean-atmosphere">
+            <div className="ocean-grid" />
+          </div>
+          {children}
+        </Providers>
       </body>
     </html>
   )

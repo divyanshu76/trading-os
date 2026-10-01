@@ -185,7 +185,7 @@ export function DashboardClient({ trades, accounts, currency }: DashboardClientP
   ]
 
   return (
-    <div className="p-4 md:p-6 space-y-6 max-w-[1600px] mx-auto">
+    <div className="p-4 md:p-6 pb-20 space-y-6 max-w-[1600px] mx-auto">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
@@ -203,7 +203,7 @@ export function DashboardClient({ trades, accounts, currency }: DashboardClientP
         </div>
         <Link
           href="/trades/new"
-          className="flex items-center gap-2 px-4 py-2.5 rounded-[12px] bg-charcoal text-offwhite text-[13px] font-bold hover:bg-slate transition-all shadow-sm"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-[12px] bg-[#386382] text-white text-[13px] font-bold hover:bg-[#2B4E68] transition-all shadow-sm"
           id="dashboard-add-trade-btn"
         >
           <Plus className="w-4 h-4" />
@@ -216,7 +216,7 @@ export function DashboardClient({ trades, accounts, currency }: DashboardClientP
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05 }}
-        className="grid grid-cols-2 lg:grid-cols-4 gap-3"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4"
       >
         {kpiCards.map((card, i) => (
           <motion.div
@@ -225,7 +225,7 @@ export function DashboardClient({ trades, accounts, currency }: DashboardClientP
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 + i * 0.04 }}
           >
-            <MetricCard {...card} size="md" />
+            <MetricCard {...card} size="md" elevated={i === 0} />
           </motion.div>
         ))}
       </motion.div>
@@ -237,7 +237,7 @@ export function DashboardClient({ trades, accounts, currency }: DashboardClientP
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="lg:col-span-2 rounded-[20px] border border-border/10 bg-card p-6 shadow-[0_8px_30px_rgba(25,29,35,0.04)]"
+          className="lg:col-span-2 rounded-[20px] glass ocean-card p-6"
         >
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -261,14 +261,14 @@ export function DashboardClient({ trades, accounts, currency }: DashboardClientP
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="rounded-[20px] border border-border/10 bg-card p-6 shadow-[0_8px_30px_rgba(25,29,35,0.04)]"
+          className="rounded-[20px] glass ocean-card p-6"
         >
           <h2 className="text-[15px] font-bold text-charcoal mb-4">Performance Stats</h2>
           <div className="grid grid-cols-2 gap-2">
             {statsCards.map(({ title, value }) => (
-              <div key={title} className="rounded-xl bg-charcoal/5 px-3 py-2.5 border border-border/5">
-                <p className="text-[9px] text-grey font-bold uppercase tracking-wide">{title}</p>
-                <p className="text-[13px] font-extrabold text-charcoal tabular-nums mt-0.5 truncate">{value}</p>
+              <div key={title} className="rounded-xl bg-white/40 px-3 py-2.5 border border-[rgba(56,99,130,0.10)] backdrop-blur-sm">
+                <p className="text-[9px] text-[#4D5B70] font-bold uppercase tracking-wider">{title}</p>
+                <p className="text-[13px] font-extrabold text-[#182A3A] tabular-nums mt-0.5 truncate">{value}</p>
               </div>
             ))}
           </div>
@@ -281,7 +281,7 @@ export function DashboardClient({ trades, accounts, currency }: DashboardClientP
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="rounded-[20px] border border-border/10 bg-card p-6 shadow-[0_8px_30px_rgba(25,29,35,0.04)]"
+          className="rounded-[20px] glass ocean-card p-6"
         >
           <h2 className="text-[15px] font-bold text-charcoal mb-4">Daily P&L (30 days)</h2>
           <DailyPnlChart data={dailyPnl} currency={currency} height={200} />
@@ -291,11 +291,11 @@ export function DashboardClient({ trades, accounts, currency }: DashboardClientP
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="rounded-[20px] border border-border/10 bg-card p-6 shadow-[0_8px_30px_rgba(25,29,35,0.04)]"
+          className="rounded-[20px] glass ocean-card p-6"
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-[15px] font-bold text-charcoal">Drawdown</h2>
-            <span className="text-xs text-red-400 tabular-nums font-medium">
+            <span className="text-xs text-[#A55363] tabular-nums font-bold">
               Max: {drawdownData.maxDrawdownPercent.toFixed(2)}%
             </span>
           </div>
@@ -315,9 +315,9 @@ export function DashboardClient({ trades, accounts, currency }: DashboardClientP
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="rounded-[20px] border border-border/10 bg-card shadow-[0_8px_30px_rgba(25,29,35,0.04)] overflow-hidden"
+        className="rounded-[20px] glass ocean-card overflow-hidden"
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border/10 bg-background/50">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[rgba(56,99,130,0.10)] bg-white/30">
           <h2 className="text-[15px] font-bold text-charcoal">Recent Trades</h2>
           <Link
             href="/trades"
@@ -327,22 +327,22 @@ export function DashboardClient({ trades, accounts, currency }: DashboardClientP
             <ArrowUpRight className="w-3 h-3" />
           </Link>
         </div>
-        <div className="overflow-x-auto scrollbar-thin">
+        <div className="overflow-x-auto scrollbar-none">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border/10 bg-background/20">
+              <tr className="border-b border-[rgba(56,99,130,0.08)] bg-white/20">
                 {['Date', 'Symbol', 'Dir', 'Lots', 'Entry', 'Exit', 'P&L', 'R', 'Result'].map(h => (
-                  <th key={h} className="px-6 py-3 text-left text-[10px] font-bold text-grey uppercase tracking-wider whitespace-nowrap">
+                  <th key={h} className="px-6 py-3 text-left text-[10px] font-bold text-[#4D5B70] uppercase tracking-wider whitespace-nowrap">
                     {h}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/5">
+            <tbody className="divide-y divide-[rgba(56,99,130,0.08)]">
               {recentTrades.map(trade => (
                 <tr
                   key={trade.id}
-                  className="hover:bg-charcoal/5 transition-colors group"
+                  className="hover:bg-[rgba(56,99,130,0.04)] transition-colors group"
                 >
                   <td className="px-6 py-3.5 text-[12px] font-semibold text-grey whitespace-nowrap">
                     {trade.date ? format(new Date(trade.date), 'MMM d') : '—'}
@@ -356,8 +356,8 @@ export function DashboardClient({ trades, accounts, currency }: DashboardClientP
                     <span className={cn(
                       'px-2 py-1 rounded-[6px] text-[10px] font-bold uppercase',
                       trade.direction === 'long'
-                        ? 'bg-profit/15 text-profit'
-                        : 'bg-loss/15 text-loss'
+                        ? 'bg-[rgba(53,125,113,0.12)] text-[#357D71]'
+                        : 'bg-[rgba(165,83,99,0.12)] text-[#A55363]'
                     )}>
                       {trade.direction === 'long' ? 'L' : 'S'}
                     </span>

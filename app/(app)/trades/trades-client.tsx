@@ -316,8 +316,8 @@ export function TradesClient({ initialTrades, accounts, strategies, currency }: 
         </motion.div>
       )}
 
-      {/* Table */}
-      <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] overflow-hidden">
+      {/* Desktop Table View */}
+      <div className="hidden md:block rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] overflow-hidden">
         <div className="overflow-x-auto scrollbar-thin">
           <table className="w-full text-sm">
             <thead className="border-b border-[hsl(var(--border))]">
@@ -372,9 +372,77 @@ export function TradesClient({ initialTrades, accounts, strategies, currency }: 
             </tbody>
           </table>
         </div>
+      </div>
 
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-3">
+        {table.getRowModel().rows.length === 0 ? (
+          <div className="p-8 text-center text-[hsl(var(--muted-foreground))] text-sm bg-[hsl(var(--card))] rounded-xl border border-[hsl(var(--border))]">
+            <div className="flex flex-col items-center gap-3">
+              <p>No trades found.</p>
+              <Link href="/trades/new" className="text-[hsl(var(--primary))] hover:underline flex items-center gap-1">
+                <Plus className="w-4 h-4" />Add your first trade
+              </Link>
+            </div>
+          </div>
+        ) : (
+          table.getRowModel().rows.map(row => {
+            const trade = row.original
+            const pnl = trade.net_pnl
+            const isWin = pnl && pnl > 0
+            
+            return (
+              <Link 
+                href={`/trades/${trade.id}`}
+                key={row.id} 
+                className="block bg-[hsl(var(--card))] rounded-xl border border-[hsl(var(--border))] p-4 shadow-sm hover:border-slate/30 transition-colors"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-bold text-charcoal">{trade.symbol}</span>
+                      <span className={cn(
+                        'px-1.5 py-0.5 rounded text-[10px] font-bold uppercase',
+                        trade.direction === 'long' ? 'bg-emerald-400/15 text-emerald-400' : 'bg-red-400/15 text-red-400'
+                      )}>
+                        {trade.direction === 'long' ? 'L' : 'S'}
+                      </span>
+                    </div>
+                    <span className="text-xs text-[hsl(var(--muted-foreground))]">
+                      {trade.date ? format(new Date(trade.date), 'MMM d, yyyy') : '—'}
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <div className={cn('text-sm font-extrabold tabular-nums', getPnlColor(pnl ?? 0))}>
+                      {pnl !== null && pnl !== undefined ? `${pnl >= 0 ? '+' : ''}${formatCurrency(pnl, currency)}` : '—'}
+                    </div>
+                    <div className={cn('text-xs font-bold tabular-nums mt-0.5', getPnlColor(trade.r_multiple ?? 0))}>
+                      {trade.r_multiple !== null && trade.r_multiple !== undefined ? formatRMultiple(trade.r_multiple) : '—'}
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between text-xs text-[hsl(var(--muted-foreground))] border-t border-border/10 pt-3">
+                  <div className="flex gap-4">
+                    <span><strong className="font-medium text-grey">Entry:</strong> {trade.entry_price?.toFixed(5) ?? '—'}</span>
+                    <span><strong className="font-medium text-grey">Exit:</strong> {trade.exit_price?.toFixed(5) ?? '—'}</span>
+                  </div>
+                  {trade.result && (
+                    <span className={cn('px-2 py-0.5 rounded-full text-[10px] font-semibold border', getResultBadgeClass(trade.result))}>
+                      {trade.result.toUpperCase()}
+                    </span>
+                  )}
+                </div>
+              </Link>
+            )
+          })
+        )}
+      </div>
+
+      {/* Pagination Container (Shared) */}
+      <div className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] overflow-hidden">
         {/* Pagination */}
-        <div className="flex items-center justify-between px-4 py-3 border-t border-[hsl(var(--border))] text-xs text-[hsl(var(--muted-foreground))]">
+        <div className="flex flex-col sm:flex-row items-center justify-between px-4 py-3 gap-3 text-xs text-[hsl(var(--muted-foreground))]">
           <span>
             Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}–
             {Math.min((table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize, filteredData.length)} of {filteredData.length}

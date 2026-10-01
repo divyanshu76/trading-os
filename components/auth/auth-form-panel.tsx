@@ -8,7 +8,7 @@ export function AuthFormPanel({ children }: { children: React.ReactNode }) {
   const isLogin = pathname.includes('/login')
   
   return (
-    <div className="w-full h-full min-h-0 flex flex-col justify-center items-center p-[12px_16px] md:p-[24px_32px] lg:py-[20px] lg:px-[48px] xl:py-[24px] xl:px-[56px] relative z-10">
+    <div className="w-full md:h-full flex flex-col justify-center items-center p-[16px_16px_32px] md:p-[24px_32px] lg:py-[20px] lg:px-[48px] xl:py-[24px] xl:px-[56px] relative z-10">
       <div className="w-full max-w-[420px] mx-auto">
         <AnimatePresence mode="wait">
           <motion.div

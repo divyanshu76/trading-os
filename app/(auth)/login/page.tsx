@@ -93,12 +93,12 @@ export default function LoginPage() {
             placeholder="trader@example.com"
             {...register('email')}
             className={cn(
-              "w-full px-3 sm:px-4 h-[clamp(40px,6dvh,48px)] rounded-[8px] sm:rounded-[12px] bg-[hsl(var(--input))] text-[13px] sm:text-[15px] font-medium text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))]/60 border border-[rgba(23,27,32,0.10)] focus:outline-none focus:ring-4 focus:ring-[#65757C]/10 focus:border-[#65757C] hover:border-[rgba(23,27,32,0.16)] transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]",
-              errors.email && "border-red-300 focus:ring-red-500/20 focus:border-red-400 bg-red-50/40"
+              "w-full px-3 sm:px-4 h-[clamp(40px,6dvh,48px)] rounded-[8px] sm:rounded-[12px] bg-[hsl(var(--input))] text-[13px] sm:text-[15px] font-medium text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))]/60 border border-[hsl(var(--border))/0.2] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] hover:border-[hsl(var(--border))/0.4] transition-all shadow-sm",
+              errors.email && "border-[hsl(var(--loss))] focus:ring-[hsl(var(--loss))] focus:border-[hsl(var(--loss))] bg-[hsl(var(--loss))]/5"
             )}
           />
           {errors.email && (
-            <p className="mt-1.5 text-[12px] font-semibold text-loss">{errors.email.message}</p>
+            <p className="mt-1.5 text-[12px] font-semibold text-[hsl(var(--loss))]">{errors.email.message}</p>
           )}
         </div>
 
@@ -122,8 +122,8 @@ export default function LoginPage() {
               placeholder="..."
               {...register('password')}
               className={cn(
-              "w-full px-3 sm:px-4 h-[clamp(40px,6dvh,48px)] pr-12 rounded-[8px] sm:rounded-[12px] bg-[hsl(var(--input))] text-[13px] sm:text-[15px] font-medium text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))]/60 border border-[rgba(23,27,32,0.10)] focus:outline-none focus:ring-4 focus:ring-[#65757C]/10 focus:border-[#65757C] hover:border-[rgba(23,27,32,0.16)] transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)]",
-                errors.password && "border-red-300 focus:ring-red-500/20 focus:border-red-400 bg-red-50/40"
+              "w-full px-3 sm:px-4 h-[clamp(40px,6dvh,48px)] pr-12 rounded-[8px] sm:rounded-[12px] bg-[hsl(var(--input))] text-[13px] sm:text-[15px] font-medium text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))]/60 border border-[hsl(var(--border))/0.2] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] hover:border-[hsl(var(--border))/0.4] transition-all shadow-sm",
+                errors.password && "border-[hsl(var(--loss))] focus:ring-[hsl(var(--loss))] focus:border-[hsl(var(--loss))] bg-[hsl(var(--loss))]/5"
               )}
             />
             <button
@@ -136,7 +136,7 @@ export default function LoginPage() {
             </button>
           </div>
           {errors.password && (
-            <p className="mt-1.5 text-[12px] font-semibold text-loss">{errors.password.message}</p>
+            <p className="mt-1.5 text-[12px] font-semibold text-[hsl(var(--loss))]">{errors.password.message}</p>
           )}
         </div>
 
@@ -144,7 +144,7 @@ export default function LoginPage() {
           type="submit"
           disabled={loading}
           id="login-submit-btn"
-          className="w-full mt-[clamp(4px,1dvh,6px)] h-[clamp(44px,7dvh,52px)] rounded-[8px] sm:rounded-[12px] bg-[hsl(var(--foreground))] text-[hsl(var(--card))] text-[13px] sm:text-[15px] font-bold hover:bg-[#20262B] hover:-translate-y-[1px] active:scale-[0.98] disabled:opacity-60 disabled:hover:bg-[hsl(var(--foreground))] disabled:hover:translate-y-0 transition-all flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(23,27,32,0.2)] group"
+          className="w-full mt-[clamp(4px,1dvh,6px)] h-[clamp(44px,7dvh,52px)] rounded-[8px] sm:rounded-[12px] bg-[hsl(var(--primary))] text-white text-[13px] sm:text-[15px] font-bold hover:bg-[hsl(var(--primary-strong))] hover:-translate-y-[1px] active:scale-[0.98] disabled:opacity-60 disabled:hover:bg-[hsl(var(--primary))] disabled:hover:translate-y-0 transition-all flex items-center justify-center gap-2 shadow-[0_4px_14px_rgba(23,27,32,0.2)] group"
         >
           {loading && <Loader2 className="w-4 h-4 animate-spin" />}
           {loading ? 'Signing in...' : 'Sign In'}
@@ -155,7 +155,7 @@ export default function LoginPage() {
       <div className="mt-[clamp(6px,1.5dvh,16px)] pt-[clamp(6px,1.5dvh,16px)] border-t border-[rgba(23,27,32,0.06)] text-center">
         <p className="text-[12px] sm:text-[14px] font-medium text-[hsl(var(--muted-foreground))]">
           Don&apos;t have an account?{' '}
-          <Link href="/signup" className="text-[hsl(var(--foreground))] font-bold hover:text-[hsl(var(--muted-foreground))] transition-colors inline-flex items-center gap-1 group">
+          <Link href="/signup" className="text-[hsl(var(--foreground))] font-bold hover:text-[hsl(var(--primary))] transition-colors inline-flex items-center gap-1 group">
             Create one free
             <ArrowRight className="w-3.5 h-3.5 opacity-70 group-hover:translate-x-0.5 transition-transform" />
           </Link>

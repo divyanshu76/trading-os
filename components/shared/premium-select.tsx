@@ -34,7 +34,7 @@ export const PremiumSelect = React.forwardRef<
       <SelectPrimitive.Portal>
         <SelectPrimitive.Content
           className={cn(
-            "relative z-50 max-h-[min(320px,calc(100vh-24px))] min-w-[8rem] overflow-hidden rounded-[14px] border border-[hsl(var(--border)/0.15)] bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] shadow-[0_12px_48px_rgba(20,24,28,0.12)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+            "relative z-50 max-h-[min(320px,calc(100vh-24px))] min-w-[8rem] overflow-hidden rounded-[14px] glass-dropdown data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
           )}
           position="popper"
           sideOffset={6}
